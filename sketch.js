@@ -1,7 +1,9 @@
 let circleCount = 1;
 
 function setup() {
-  createCanvas(400, 400);
+  let canvas = createCanvas(500, 500);
+  canvas.id("p5-canvas");
+  canvas.parent("p5-canvas-container");
   noFill();
   strokeWeight(10);
   colorMode(HSB);
