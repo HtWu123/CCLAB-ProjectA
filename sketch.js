@@ -16,8 +16,12 @@ let stretchY = 1; // 垂直拉伸比例
 let stretchSpeed = 0.1; // 拉伸恢复速度
 
 // 图标位置和大小
-let iconSize = 30; // 图标大小
-let iconPadding = 10; // 图标间距
+// let iconSize = 30; // 图标大小
+// let iconPadding = 10; // 图标间距
+// let iconX = 10; // 图标起始 x 位置
+// let iconY = 10; // 图标起始 y 位置
+let iconSize = 50; // 图标大小（从 30 调整为 50）
+let iconPadding = 15; // 图标间距（从 10 调整为 15）
 let iconX = 10; // 图标起始 x 位置
 let iconY = 10; // 图标起始 y 位置
 
@@ -36,6 +40,9 @@ function draw() {
 
   // 绘制图标
   drawIcons();
+
+  // 绘制史莱姆大小的条形图
+  drawSizeBar();
 
   if (!isExploded) {
     // 使用 lerp 平滑过渡半径
@@ -69,13 +76,14 @@ function drawGrassBackground() {
   // 绘制草地背景
   push();
   // 渐变背景（从浅绿到深绿）
+  colorMode(RGB);
   for (let i = 0; i < height; i++) {
     let inter = map(i, 0, height, 0, 1);
-    let c = lerpColor(color(100, 50, 100), color(100, 80, 50), inter);
+    let c = lerpColor(color(174, 209, 133), color(50, 152, 69), inter);
     stroke(c);
     line(0, i, width, i);
   }
-
+  pop();
 }
 
 function drawIcons() {
@@ -89,63 +97,92 @@ function drawIcons() {
 
 function drawIcon(type, isActive) {
   push();
+  colorMode(RGB);
   // 设置图标颜色
   if (isActive) {
-    // 高亮颜色粉色
-    fill(300, 100, 100);
+    // 高亮颜色red
+    fill(144, 37, 37);
   } else {
-    fill(50, 50, 50); // 默认颜色
+    fill(246, 198, 60);
   }
   noStroke();
 
   // 根据类型绘制图标
   if (type === 'drag') {
-    rect(10, 10, 30, 30);
-    //font "DRAG"
-    fill(0, 0, 100);
-    textSize(9);
-    text("DRAG", 12, 25);
+    rect(iconX, iconY, iconSize, iconSize); // 使用 iconX 和 iconY
+    // 字体 "DRAG" 橙色
+    fill(255);
+    textSize(14); // 字体大小从 9 调整为 14
+    textAlign(CENTER, CENTER);
+    text("DRAG", iconX + iconSize / 2, iconY + iconSize / 2); // 居中显示
   } else if (type === 'feed') {
-    rect(50, 10, 30, 30);
-    //font "FEED"
-    fill(0, 0, 100);
-    textSize(9);
-    text("FEED", 55, 25);
-
+    rect(iconX + iconSize + iconPadding, iconY, iconSize, iconSize); // 第二个图标
+    // 字体 "FEED"
+    fill(255);
+    textSize(14); // 字体大小从 9 调整为 14
+    textAlign(CENTER, CENTER);
+    text("FEED", iconX + iconSize + iconPadding + iconSize / 2, iconY + iconSize / 2); // 居中显示
   } else if (type === 'reset') {
-    //red
-    fill(0, 100, 100);
-    rect(90, 10, 30, 30);
-    //font "RESET"
-    fill(0, 0, 100);
-    textSize(9);
-    text("RESET", 92, 25);
+    // 第三个图标
+    rect(iconX + 2 * (iconSize + iconPadding), iconY, iconSize, iconSize);
+    // 字体 "RESET"
+    fill(255);
+    textSize(14); // 字体大小从 9 调整为 14
+    textAlign(CENTER, CENTER);
+    text("RESET", iconX + 2 * (iconSize + iconPadding) + iconSize / 2, iconY + iconSize / 2); // 居中显示
   }
   pop();
+}
+
+function drawSizeBar() {
+  let barWidth = 200; // 条形图的宽度
+  let barHeight = 30; // 条形图的高度
+  let barX = width - barWidth - 20; // 条形图的 x 位置（右上角）
+  let barY = 20; // 条形图的 y 位置
+
+  // 绘制条形图的背景
+  noStroke();
+  fill(50, 50, 50, 100); // 半透明灰色
+  rect(barX, barY, barWidth, barHeight, 5); // 圆角矩形
+
+  // 计算当前史莱姆大小的比例
+  let sizeRatio = baseRadius / 200; // 假设最大半径为 200
+  let fillWidth = barWidth * sizeRatio; // 填充的宽度
+
+  // 绘制填充部分
+  fill(frameCount % 360, 80, 100); // 使用史莱姆的颜色
+  rect(barX, barY, fillWidth, barHeight, 5); // 圆角矩形
+
+  // 绘制文字 "Size"
+  fill(255); // 白色文字
+  textSize(20);
+  textAlign(LEFT, CENTER);
+  text("SIZE", barX - 50, barY + barHeight / 2);
 }
 
 function drawMainSlime() {
   // 设置史莱姆的颜色
   stroke(frameCount % 360, 80, 100); // 史莱姆的颜色（动态变化）
-  fill(frameCount % 360-10, 70, 100-10, 50); // 史莱姆的填充颜色（半透明）
+  fill(frameCount % 360 - 10, 70, 100 - 10, 50); // 史莱姆的填充颜色（半透明）
 
   // 开始绘制史莱姆形状
   beginShape();
   for (let j = 0; j < 360; j += 10) {
     let angle = radians(j); // 将角度转换为弧度
     let noiseOffset = map(j, 0, 360, 0, 6); // 动态偏移
-    let finalRadius = baseRadius + 20 * noise(frameCount * 0.05 + noiseOffset); 
+    let finalRadius = baseRadius + 20 * noise(frameCount * 0.05 + noiseOffset);
     let x = width / 2 + finalRadius * cos(angle) * stretchX; // 水平拉伸
     let y = height / 2 + finalRadius * sin(angle) * stretchY; // 垂直拉伸
-    curveVertex(x, y); 
+    curveVertex(x, y);
   }
-  endShape(CLOSE); 
+  endShape(CLOSE);
+  drawMouth();
 }
 
 function drawEyes() {
   // 计算眼睛的大小
   let eyeSize = map(baseRadius, 20, 200, 20, 40); // 眼睛大小随半径变化
-  let pupilSize = eyeSize / 2 + 3; // 瞳孔大小是眼睛大小的一半
+  let pupilSize = eyeSize / 2; // 瞳孔大小是眼睛大小的一半
 
   // 左眼
   let leftEyeX = width / 2 - baseRadius * 0.4 * stretchX;
@@ -159,14 +196,21 @@ function drawEyes() {
 }
 
 function drawEye(eyeX, eyeY, eyeSize, pupilSize) {
-  // 绘制眼睛的白色部分
-  fill(255);
+  // 绘制眼睛的白色部分 边缘的stroke是黑色的
+  // fill(255);
+  // noStroke();
+  // ellipse(eyeX, eyeY, eyeSize, eyeSize);
+  fill(0);
   noStroke();
   ellipse(eyeX, eyeY, eyeSize, eyeSize);
+  fill(255);
+  noStroke();
+  ellipse(eyeX, eyeY, eyeSize - 6, eyeSize - 6);
+
 
   // 计算瞳孔的偏移
-  let pupilOffsetX = map(mouseX, 0, width, -6, 6); // 水平偏移
-  let pupilOffsetY = map(mouseY, 0, height, -6, 6); // 垂直偏移
+  let pupilOffsetX = map(mouseX, 0, width, -5, 5); // 水平偏移
+  let pupilOffsetY = map(mouseY, 0, height, -5, 5); // 垂直偏移
 
   // 绘制瞳孔
   fill(0);
@@ -206,7 +250,7 @@ function drawFoods() {
 function mousePressed() {
   // 检查是否点击了图标
   if (mouseX > iconX && mouseX < iconX + 3 * (iconSize + iconPadding) &&
-      mouseY > iconY && mouseY < iconY + iconSize) {
+    mouseY > iconY && mouseY < iconY + iconSize) {
     // 计算点击了哪个图标
     if (mouseX < iconX + iconSize) {
       mode = 'drag'; // 切换到拖拽模式
@@ -225,7 +269,6 @@ function mousePressed() {
         if (d < 10) { // 如果点击了食物
           targetRadius += radiusIncrement; // 增加史莱姆的半径
           foods.splice(i, 1); // 移除被点击的食物
-
           // 如果史莱姆变得太大，爆炸成小史莱姆
           if (targetRadius > 200) {
             explode();
@@ -310,12 +353,12 @@ function updateSmallSlime(slime) {
 function drawSmallSlime(slime) {
   noFill();
   stroke((frameCount + slime.x) % 360, 80, 100); // 小史莱姆的颜色
-  strokeWeight(5);
-  ellipse(slime.x, slime.y, slime.radius * 2);
+  strokeWeight(8);
+  circle(slime.x, slime.y, slime.radius * 3);
 
   // 绘制小史莱姆的眼睛
-  drawSmallEye(slime.x - slime.radius * 0.3, slime.y - slime.radius * 0.2);
-  drawSmallEye(slime.x + slime.radius * 0.3, slime.y - slime.radius * 0.2);
+  drawSmallEye(slime.x - slime.radius * 0.5, slime.y - slime.radius * 0.4);
+  drawSmallEye(slime.x + slime.radius * 0.5, slime.y - slime.radius * 0.4);
 }
 
 // 绘制小史莱姆的眼睛
@@ -325,4 +368,43 @@ function drawSmallEye(eyeX, eyeY) {
   ellipse(eyeX, eyeY, 10, 10); // 眼白
   fill(0);
   ellipse(eyeX, eyeY, 5, 5); // 瞳孔
+}
+
+// function drawMouth() {
+//   // 计算嘴巴的大小和位置
+//   let mouthWidth = map(baseRadius, 20, 200, 20, 40); // 嘴巴宽度随半径变化
+//   let mouthHeight = map(baseRadius, 20, 200, 10, 20); // 嘴巴高度随半径变化
+//   let mouthX = width / 2; // 嘴巴的 x 位置
+//   let mouthY = height / 2 + baseRadius * 0.4 * stretchY; // 嘴巴的 y 位置
+//   push();
+//   // 绘制嘴巴
+//   noStroke();
+//   //红色
+//   fill(0, 100, 100);
+//   ellipse(mouthX, mouthY, mouthWidth * stretchX*2, mouthHeight * stretchY*2); // 根据拉伸比例调整嘴巴形状
+//   fill(255); //内圈白色
+//   ellipse(mouthX, mouthY, mouthWidth * stretchX*0.8, mouthHeight * stretchY*0.8); // 内圈
+//   pop();
+// }
+function drawMouth() {
+  // 计算嘴巴的大小和位置
+  let mouthWidth = map(baseRadius, 20, 200, 10, 100); // 增大嘴巴宽度
+  let mouthHeight = map(baseRadius, 20, 200, 10, 25); // 增大嘴巴高度
+  let mouthX = width / 2; // 嘴巴的 x 位置
+  let mouthY = height / 2 + baseRadius * 0.4 * stretchY; // 嘴巴的 y 位置
+  push();
+  colorMode(RGB);
+  noStroke();
+
+  // 外圈深红色（增加立体感）
+  fill(150, 20, 30);
+  rect(mouthX - mouthWidth * stretchX, mouthY - mouthHeight * stretchY, mouthWidth * 2 * stretchX, mouthHeight * 2 * stretchY, 20);
+  //内圈上下两个嘴唇 纯红色 比上面的窄一点 
+  fill(255, 0, 0);
+  rect(mouthX - mouthWidth * stretchX * 0.8, mouthY - mouthHeight * stretchY * 0.8, mouthWidth * 2 * stretchX * 0.8, mouthHeight * 2 * stretchY * 0.8, 20);
+  fill(150, 20, 30);
+  //用深红色的矩形遮住上下两个嘴唇的连接处 在纯红色矩形中间画一条很细的深红色线
+  rect(mouthX - mouthWidth * stretchX * 0.8, mouthY , mouthWidth * 2 * stretchX * 0.8, 4);
+  
+  pop();
 }
