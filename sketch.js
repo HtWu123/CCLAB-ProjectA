@@ -22,7 +22,7 @@ let iconX = 10; // 图标起始 x 位置
 let iconY = 10; // 图标起始 y 位置
 
 function setup() {
-  let canvas = createCanvas(600, 600);
+  let canvas = createCanvas(800, 500);
   canvas.id("p5-canvas");
   canvas.parent("p5-canvas-container");
   noFill();

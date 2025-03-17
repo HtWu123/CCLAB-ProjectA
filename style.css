@@ -92,6 +92,7 @@ body {
 /* p5.js sketch */
 canvas {
     display: block;
+    margin:auto;
 }
 
 #p5-canvas-container {
