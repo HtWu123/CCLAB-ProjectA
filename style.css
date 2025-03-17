@@ -6,8 +6,8 @@ CCLaboratories Biodiversity Atlas
 */
 
 body {
-    background-color: white;
-    color: DimGray;
+    background-color: rgb(96, 105, 87);
+    color: whitesmoke;
     font-family: 'Courier New', Courier, monospace;
     font-size: 1em;
     line-height: 1.5em;
@@ -25,6 +25,8 @@ body {
     font-weight: 600;
     margin-top: 80px;
     margin-bottom: 60px;
+    color: white; 
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
 /* main content */
@@ -40,14 +42,17 @@ body {
 
 .red {
     color: DeepPink;
+    text-shadow: 0 0 5px rgba(255, 20, 147, 0.8), 0 0 10px rgba(255, 20, 147, 0.6);
 }
 
 .green {
     color: LightSeaGreen;
+    text-shadow: 0 0 5px rgba(32, 178, 170, 0.8), 0 0 10px rgba(32, 178, 170, 0.6);
 }
 
 .yellow {
     color: GoldenRod;
+    text-shadow: 0 0 5px rgba(218, 165, 32, 0.8), 0 0 10px rgba(218, 165, 32, 0.6);
 }
 
 .two-columns {

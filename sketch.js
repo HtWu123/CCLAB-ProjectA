@@ -28,7 +28,7 @@ function setup() {
   noFill();
   strokeWeight(10);
   colorMode(HSB);
-  initializeFoods();
+  initializeFoods(); 
 }
 
 function draw() {
@@ -340,6 +340,13 @@ function drawSmallSlime(slime) {
   // 绘制小史莱姆的眼睛
   drawSmallEye(slime.x - slime.radius * 0.5, slime.y - slime.radius * 0.4);
   drawSmallEye(slime.x + slime.radius * 0.5, slime.y - slime.radius * 0.4);
+
+  textSize(20);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  //click reset to restart
+  text("Slime Exploded", width / 2, height - 100);
+  text("Click RESET to restart", width / 2, height - 50);
 }
 
 // 绘制小史莱姆的眼睛
