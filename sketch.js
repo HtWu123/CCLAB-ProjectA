@@ -15,11 +15,7 @@ let stretchX = 1; // 水平拉伸比例
 let stretchY = 1; // 垂直拉伸比例
 let stretchSpeed = 0.1; // 拉伸恢复速度
 
-// 图标位置和大小
-// let iconSize = 30; // 图标大小
-// let iconPadding = 10; // 图标间距
-// let iconX = 10; // 图标起始 x 位置
-// let iconY = 10; // 图标起始 y 位置
+
 let iconSize = 50; // 图标大小（从 30 调整为 50）
 let iconPadding = 15; // 图标间距（从 10 调整为 15）
 let iconX = 10; // 图标起始 x 位置
@@ -37,12 +33,8 @@ function setup() {
 
 function draw() {
   drawGrassBackground(); // 绘制草地背景
-
-  // 绘制图标
-  drawIcons();
-
-  // 绘制史莱姆大小的条形图
-  drawSizeBar();
+  drawIcons();   // 绘制图标
+  drawSizeBar();   // 绘制史莱姆大小的条形图
 
   if (!isExploded) {
     // 使用 lerp 平滑过渡半径
@@ -54,9 +46,7 @@ function draw() {
     // 绘制主史莱姆
     drawMainSlime();
     drawEyes();
-
-    // 绘制食物
-    drawFoods();
+    drawFoods();     // 绘制食物
 
     // 如果不在拖拽状态，逐渐恢复形状
     if (!isDragging) {
@@ -73,9 +63,7 @@ function draw() {
 }
 
 function drawGrassBackground() {
-  // 绘制草地背景
   push();
-  // 渐变背景（从浅绿到深绿）
   colorMode(RGB);
   for (let i = 0; i < height; i++) {
     let inter = map(i, 0, height, 0, 1);
@@ -119,15 +107,14 @@ function drawIcon(type, isActive) {
     rect(iconX + iconSize + iconPadding, iconY, iconSize, iconSize); // 第二个图标
     // 字体 "FEED"
     fill(255);
-    textSize(14); // 字体大小从 9 调整为 14
+    textSize(14); // 字体大小
     textAlign(CENTER, CENTER);
     text("FEED", iconX + iconSize + iconPadding + iconSize / 2, iconY + iconSize / 2); // 居中显示
   } else if (type === 'reset') {
-    // 第三个图标
     rect(iconX + 2 * (iconSize + iconPadding), iconY, iconSize, iconSize);
     // 字体 "RESET"
     fill(255);
-    textSize(14); // 字体大小从 9 调整为 14
+    textSize(14); // 字体大小
     textAlign(CENTER, CENTER);
     text("RESET", iconX + 2 * (iconSize + iconPadding) + iconSize / 2, iconY + iconSize / 2); // 居中显示
   }
@@ -197,16 +184,12 @@ function drawEyes() {
 
 function drawEye(eyeX, eyeY, eyeSize, pupilSize) {
   // 绘制眼睛的白色部分 边缘的stroke是黑色的
-  // fill(255);
-  // noStroke();
-  // ellipse(eyeX, eyeY, eyeSize, eyeSize);
   fill(0);
   noStroke();
   ellipse(eyeX, eyeY, eyeSize, eyeSize);
   fill(255);
   noStroke();
   ellipse(eyeX, eyeY, eyeSize - 6, eyeSize - 6);
-
 
   // 计算瞳孔的偏移
   let pupilOffsetX = map(mouseX, 0, width, -5, 5); // 水平偏移
@@ -269,8 +252,7 @@ function mousePressed() {
         if (d < 10) { // 如果点击了食物
           targetRadius += radiusIncrement; // 增加史莱姆的半径
           foods.splice(i, 1); // 移除被点击的食物
-          // 如果史莱姆变得太大，爆炸成小史莱姆
-          if (targetRadius > 200) {
+          if (targetRadius > 200) {   // 如果史莱姆变得太大，爆炸成小史莱姆
             explode();
           }
           break;
@@ -298,7 +280,6 @@ function mouseDragged() {
     // 计算鼠标移动的方向
     let dx = mouseX - (width / 2 + dragOffsetX);
     let dy = mouseY - (height / 2 + dragOffsetY);
-
     // 根据鼠标移动方向拉伸史莱姆
     stretchX = map(abs(dx), 0, baseRadius, 1, 2); // 水平拉伸
     stretchY = map(abs(dy), 0, baseRadius, 1, 2); // 垂直拉伸
@@ -370,22 +351,6 @@ function drawSmallEye(eyeX, eyeY) {
   ellipse(eyeX, eyeY, 5, 5); // 瞳孔
 }
 
-// function drawMouth() {
-//   // 计算嘴巴的大小和位置
-//   let mouthWidth = map(baseRadius, 20, 200, 20, 40); // 嘴巴宽度随半径变化
-//   let mouthHeight = map(baseRadius, 20, 200, 10, 20); // 嘴巴高度随半径变化
-//   let mouthX = width / 2; // 嘴巴的 x 位置
-//   let mouthY = height / 2 + baseRadius * 0.4 * stretchY; // 嘴巴的 y 位置
-//   push();
-//   // 绘制嘴巴
-//   noStroke();
-//   //红色
-//   fill(0, 100, 100);
-//   ellipse(mouthX, mouthY, mouthWidth * stretchX*2, mouthHeight * stretchY*2); // 根据拉伸比例调整嘴巴形状
-//   fill(255); //内圈白色
-//   ellipse(mouthX, mouthY, mouthWidth * stretchX*0.8, mouthHeight * stretchY*0.8); // 内圈
-//   pop();
-// }
 function drawMouth() {
   // 计算嘴巴的大小和位置
   let mouthWidth = map(baseRadius, 20, 200, 10, 100); // 增大嘴巴宽度
@@ -396,7 +361,7 @@ function drawMouth() {
   colorMode(RGB);
   noStroke();
 
-  // 外圈深红色（增加立体感）
+  // 外圈深红色
   fill(150, 20, 30);
   rect(mouthX - mouthWidth * stretchX, mouthY - mouthHeight * stretchY, mouthWidth * 2 * stretchX, mouthHeight * 2 * stretchY, 20);
   //内圈上下两个嘴唇 纯红色 比上面的窄一点 
@@ -405,6 +370,5 @@ function drawMouth() {
   fill(150, 20, 30);
   //用深红色的矩形遮住上下两个嘴唇的连接处 在纯红色矩形中间画一条很细的深红色线
   rect(mouthX - mouthWidth * stretchX * 0.8, mouthY , mouthWidth * 2 * stretchX * 0.8, 4);
-  
   pop();
 }
