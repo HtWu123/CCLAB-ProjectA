@@ -197,7 +197,7 @@ function drawEye(eyeX, eyeY, eyeSize, pupilSize) {
 
   // 绘制瞳孔
   fill(0);
-  circle(eyeX + pupilOffsetX, eyeY + pupilOffsetY, pupilSize, pupilSize);
+  circle(eyeX + pupilOffsetX, eyeY + pupilOffsetY, pupilSize);
 }
 
 function initializeFoods() {
@@ -218,7 +218,7 @@ function drawFoods() {
     // 绘制苹果的主体
     fill(0, 100, 100); // 红色
     noStroke();
-    circle(x, y, 20, 20); // 苹果的主体
+    circle(x, y, 20); // 苹果的主体
     // 绘制苹果的叶子
     fill(80, 100, 50); // 绿色
     triangle(x - 8, y - 10, x - 12, y - 15, x - 4, y - 15); // 叶子
