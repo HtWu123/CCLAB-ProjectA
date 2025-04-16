@@ -123,5 +123,8 @@ class Firefly {
     }
     ellipse(0, this.size * 0.4, this.size * 0.7, this.size * 0.7);
     pop();
+    // glow
   }
+
+
 }
