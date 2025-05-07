@@ -20,7 +20,7 @@ function drawInterface() {
     let ci = int(map(rotationSpeed, 0.1, 2.0, 0, noteColors.length-1));
     fill(noteColors[ci]);
     noStroke();
-    ellipse(pos, speedSliderY + speedSliderH/2, 25, 25);
+    circle(pos, speedSliderY + speedSliderH/2, 25);
   
     fill(200);
     noStroke();
@@ -65,7 +65,7 @@ function drawInterface() {
       noFill();
       stroke(hlColors[t]);
       strokeWeight(2);
-      ellipse(mouseX, mouseY, 50, 50);
+      circle(mouseX, mouseY, 50);
     }
   
     // 跟随鼠标绘制图标

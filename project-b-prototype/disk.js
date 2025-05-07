@@ -17,7 +17,7 @@ class Disk {
       fill('#FA812F');            // 底色
       stroke('#DFD0B8');          // 边框色
       strokeWeight(3);             // 边框粗细
-      ellipse(0, 0, this.radius * 2, this.radius * 2);
+      circle(0, 0, this.radius * 2);
   
       // —— 绘制三条同心轨道 ——
       this.drawTracks();
@@ -37,7 +37,7 @@ class Disk {
         if (e.highlighted) {
           noStroke();
           fill(noteColors[e.imageIndex], 150);
-          ellipse(e.radius, 0, 50, 50);
+          circle(e.radius, 0, 50);
         }
         drawNoteIcon(e.imageIndex, e.radius, 0, 40);
         pop();
@@ -59,19 +59,19 @@ class Disk {
         // 轨道填充
         fill('#FFB22C');
         noStroke();
-        ellipse(0, 0, outer * 2, outer * 2);
+        circle(0, 0, outer * 2);
   
         // 中心"空洞"
         if (inner > 0) {
           fill('#222831');
-          ellipse(0, 0, inner * 2, inner * 2);
+          circle(0, 0, inner * 2);
         }
   
         // 轨道边界
         noFill();
         stroke(150, 150, 200, 100);
         strokeWeight(1);
-        ellipse(0, 0, outer * 2, outer * 2);
+        circle(0, 0, outer * 2);
       }
   
       // 中心小孔
@@ -89,10 +89,10 @@ class Disk {
   
       fill('#7C4585');
       noStroke();
-      ellipse(this.radius + 20, 0, 12, 12);
+      circle(this.radius + 20, 0, 12);
   
       fill(200, 200, 255);
-      ellipse(0, 0, 10, 10);
+      circle(0, 0, 10);
     }
   
     // 检查每个元素是否经过指针区，若进入则播放音符并短暂高亮
