@@ -92,7 +92,7 @@ class Disk {
       circle(this.radius + 20, 0, 12);
   
       fill(200, 200, 255);
-      circle(0, 0, 10);
+      circle(0, 0, 10, 10);
     }
   
     // 检查每个元素是否经过指针区，若进入则播放音符并短暂高亮

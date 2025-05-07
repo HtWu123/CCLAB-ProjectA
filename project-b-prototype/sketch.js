@@ -98,7 +98,7 @@ function mousePressed() {
     let gy = diskY + sin(ang)*e.radius;
     if (dist(mouseX,mouseY,gx,gy)<20) {
       isDragging = true;
-      draggedElement = { e };
+      draggedElement = {...e};
       allElements.splice(i,1);
       return;
     }
