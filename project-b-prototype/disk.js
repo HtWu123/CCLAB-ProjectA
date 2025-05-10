@@ -28,12 +28,14 @@ class Disk {
       noStroke();
       fill('#948979');                         // 字的颜色
       textAlign(CENTER, CENTER);  
-      textSize(this.radius * 0.1);           // 字体大小为半径的 10%  
+      textSize(this.radius * 0.1);           // 字体大小为半径的 10% 
+      textStyle(BOLD); 
       text("Echo Archive", 0, 0); 
+
       for (let e of elements) {
         push();
         rotate(e.angle);           // 每个元素相对于盘的角度
-        // 如果正好经过指针区，高亮提示
+        // 如果正好经过指针区
         if (e.highlighted) {
           noStroke();
           fill(noteColors[e.imageIndex], 150);
@@ -66,19 +68,13 @@ class Disk {
           fill('#222831');
           circle(0, 0, inner * 2);
         }
-  
-        // 轨道边界
-        noFill();
-        stroke(150, 150, 200, 100);
-        strokeWeight(1);
-        circle(0, 0, outer * 2);
       }
   
       // 中心小孔
       fill('#FEF3E2');
       stroke(0);
       strokeWeight(3);
-      circle(0, 0, this.radius * 0.2);
+      circle(0, 0, this.radius * 0.15);
     }
   
     // 绘制固定指针
@@ -119,21 +115,31 @@ class Disk {
   
     // 小工具：根据轨道索引返回摆放半径和声音合成器类型
     getTrackInfo(idx) {
-      if (idx === 0) return { radius: this.radius * 0.15, instrument: 'sine' };
+      if (idx === 0) return { radius: this.radius * 0.15, instrument: 'sawtooth' };
       if (idx === 1) return { radius: this.radius * 0.45, instrument: 'triangle' };
       return { radius: this.radius * 0.75, instrument: 'square' };
     }
-  
-    // 播放指定音符
+
     playNote(note, instrument) {
-      const freqs = { C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.00, A4: 440.00, B4: 493.88 };
+      const freqs = {
+        C4: 261.63, D4: 293.66, E4: 329.63,
+        F4: 349.23, F_4: 370.00, G4: 392.00, A4: 440.00, B4: 493.88
+      };
+      
+    
       let osc = new p5.Oscillator(instrument);
-      osc.freq(freqs[note] || 440);
-      osc.amp(instrument === 'sine' ? 0.4 : instrument === 'triangle' ? 0.3 : 0.25);
+      osc.freq(freqs[note]);
       osc.start();
-      setTimeout(() => {
-        osc.amp(0, 0.1);
-        setTimeout(() => osc.stop(), 100);
-      }, 300);
+    
+      let env = new p5.Envelope();
+      env.setADSR(0.01, 0.15, 0.07, 0.4); // 攻击迅速、衰减快、无持续、释放柔和
+      env.setRange(0.5, 0);
+    
+      env.play(osc);
+    
+      // 在 envelope 结束后关闭振荡器（400ms是 release 时间）
+      setTimeout(() => osc.stop(), 600);
     }
+    
+    
   }

@@ -1,7 +1,3 @@
-// ui.js
-// 负责绘制左侧控制面板（调色板、速度滑块、清除按钮）
-// 以及拖拽时的提示光晕
-
 // 绘制控制面板
 function drawInterface() {
     // 调色板区域
@@ -18,7 +14,7 @@ function drawInterface() {
     rect(speedSliderX, speedSliderY, speedSliderW, speedSliderH, 10);
     let pos = map(rotationSpeed, 0.1, 2.0, speedSliderX, speedSliderX + speedSliderW);
     let ci = int(map(rotationSpeed, 0.1, 2.0, 0, noteColors.length-1));
-    fill(noteColors[ci]);
+    fill('#FA812F');
     noStroke();
     circle(pos, speedSliderY + speedSliderH/2, 25);
   
@@ -48,26 +44,8 @@ function drawInterface() {
     textAlign(CENTER, CENTER);
   }
   
-  // 拖拽时绘制提示光晕和跟随图标
   function drawDraggedElement() {
     let idx = draggedElement.imageIndex;
-    let dx = mouseX - diskX, dy = mouseY - diskY;
-    let d = sqrt(dx*dx + dy*dy);
-  
-    // 如果在盘范围内，画轨道位置提示圈
-    if (d < diskRadius) {
-      let t = disk.getTrackFromDistance(d);
-      const hlColors = [
-        color(255,230,180,150),
-        color(255,200,130,150),
-        color(255,180,50,150)
-      ];
-      noFill();
-      stroke(hlColors[t]);
-      strokeWeight(2);
-      circle(mouseX, mouseY, 50);
-    }
-  
     // 跟随鼠标绘制图标
     drawNoteIcon(idx, mouseX, mouseY, 40);
   }

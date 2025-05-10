@@ -1,37 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="icon" href="data:,">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Echo Archive - Interactive Sound Disk</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #393E46;
-      font-family: Arial, sans-serif;
-    }
-    canvas {
-      display: block;
-      margin: auto;
-    }
-    .info {
-      position: absolute;
-      bottom: 10px;
-      left: 400px;
-      color: #aaa;
-      font-size: 30px;
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- p5.js & p5.sound -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
 </head>
 <body>
+  <!-- Left: p5.js canvas container -->
+  <div id="p5-canvas-container"></div>
+
+  <!-- Right: description + instructions -->
+  <div id="main-container">
+    <h2>Echo Archive</h2>
+    <p>This interactive sound disk allows you to drag musical elements onto a rotating disk. Each track represents a different sound wave (sine, triangle, square).</p>
+
+    <p><strong>Instructions:</strong></p>
+    <ul>
+      <li>Use the slider to control rotation speed.</li>
+      <li>Press the <strong>space bar</strong> to pause or play the rotation.</li>
+      <li>Click “Clear All Notes” to reset the composition.</li>
+      <li>Drag colorful notes from the palette onto the disk to compose.</li>
+    </ul>
+
+    <p>Design your own sonic memory and launch it into the future!</p>
+  </div>
+
+  <!-- JavaScript files -->
   <script src="disk.js"></script>
-<script src="ui.js"></script>
-<script src="sketch.js"></script>
-  <div class="info">Drag element to disk AND Press SPACE to stop and start</div>
+  <script src="ui.js"></script>
+  <script src="sketch.js"></script>
 </body>
 </html>

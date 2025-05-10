@@ -1,15 +1,19 @@
-// sketch.js
-// 入口文件，负责全局变量、preload、setup、draw 以及用户交互事件
-
-// 全局变量与界面参数
-let notes = ['C4','D4','E4','F4','G4','A4','B4'];
+let notes = ['C4','D4','E4','F4','F_4','G4','A4','B4'];
 let noteColors = [
-  [255,82,82],[255,152,0],[255,235,59],
-  [76,175,80],[33,150,243],[103,58,183],[233,30,99]
+  [247, 90, 90],   // 红 (#F75A5A)
+  [249, 168, 37],  // 橙 (#F9A825)
+  [244, 224, 77],  // 黄 (#F4E04D)
+  [129, 199, 132], // 绿 (#81C784)
+  [80, 200, 120], // 浅绿 (#4FC3F7)
+  [79, 195, 247],  // 蓝 (#4FC3F7)
+  [149, 117, 205], // 靛 (#9575CD)
+  [186, 104, 200]  // 紫 (#BA68C8)
 ];
+
+
 let elementImages = [], allElements = [], paletteItems = [];
 let isDragging = false, draggedElement = null;
-let rotation = 0, isPlaying = true, rotationSpeed = 0.5, lastFrameTime = 0;
+let rotation = 0, isPlaying = true, rotationSpeed = 1.0, lastFrameTime = 0;
 let diskX,diskY,diskRadius;
 let clearButtonX,clearButtonY,clearButtonW,clearButtonH;
 let speedSliderX,speedSliderY,speedSliderW,speedSliderH;
@@ -18,25 +22,51 @@ let disk;
 
 
 function drawNoteIcon(idx, x, y, s) {
-    fill(noteColors[idx]);
-    noStroke();
-    ellipse(x, y, s, s);
-    fill(255);
-    textSize(s * 0.4);
-    textAlign(CENTER, CENTER);
-    text(notes[idx][0], x, y);
+  // 带透明度的填充色（alpha = 150）
+  let c = color(...noteColors[idx]);
+  c.setAlpha(220);
+  fill(c);
+
+  // 深色描边（颜色稍微暗一些）
+  let strokeC = color(
+    noteColors[idx][0] * 0.6,
+    noteColors[idx][1] * 0.6,
+    noteColors[idx][2] * 0.6
+  );
+  stroke(strokeC);
+  strokeWeight(2);
+
+  circle(x, y, s);
+
+  // 白色文字
+  fill(255);
+  noStroke();
+  textSize(s * 0.4);
+  textAlign(CENTER, CENTER);
+  if (idx != 4 ){
+      text(notes[idx], x, y);
+  } else {
+      text('F4#', x, y);
+  }
 }
+
 
 // 初始化画布及布局
 function setup() {
-  createCanvas(800,800);
+  let canvas = createCanvas(900, 800);
+  canvas.parent("p5-canvas-container");
   angleMode(DEGREES);
   imageMode(CENTER);
 
-  diskX = width/2; diskY = height/2; diskRadius = 300;
+  diskX = width/2+60; diskY = height/2; diskRadius = 300;
   clearButtonX=20; clearButtonY=20; clearButtonW=160; clearButtonH=40;
   speedSliderX=20; speedSliderY=80; speedSliderW=160; speedSliderH=20;
-  paletteX=20; paletteY=120; paletteW=160; paletteH=400;
+  // paletteX=20; paletteY=120; paletteW=160; paletteH=400;
+  paletteX = 20; // 原来是20，现在整体向左移，不会挡住中间的 disk
+  paletteY = 120;
+  paletteW = 160;
+  paletteH = 450;
+
 
   // 初始化disk实例
   disk = new Disk(diskX, diskY, diskRadius);
@@ -98,7 +128,7 @@ function mousePressed() {
     let gy = diskY + sin(ang)*e.radius;
     if (dist(mouseX,mouseY,gx,gy)<20) {
       isDragging = true;
-      draggedElement = {...e};
+      draggedElement = {...e}; //复制一份 e 的属性，创建新对象
       allElements.splice(i,1);
       return;
     }
