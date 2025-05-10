@@ -18,16 +18,21 @@ body {
   
   
   #main-container {
-    flex: 1; /* 右边文字 */
+    flex: 1;
     background-color: #222831;
     color: #EEE;
     padding: 20px;
     overflow-y: auto;
+    font-family: 'Share Tech Mono', monospace; 
+    font-size: 19px;
   }
+  
+  
   
   h2 {
     color: #FFD369;
   }
+
   
   ul {
     padding-left: 20px;
