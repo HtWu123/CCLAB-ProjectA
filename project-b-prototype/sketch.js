@@ -20,6 +20,13 @@ let speedSliderX,speedSliderY,speedSliderW,speedSliderH;
 let paletteX,paletteY,paletteW,paletteH;
 let disk;
 
+let bgImg;
+let pixelSize = 5;
+let bgLayer;
+
+function preload() {
+  bgImg = loadImage('bg.png'); // 把文件名改成你图片的名字
+}
 
 function drawNoteIcon(idx, x, y, s) {
   // 带透明度的填充色（alpha = 150）
@@ -53,15 +60,33 @@ function drawNoteIcon(idx, x, y, s) {
 
 // 初始化画布及布局
 function setup() {
-  let canvas = createCanvas(900, 800);
+  let canvas = createCanvas(950, 820);
   canvas.parent("p5-canvas-container");
   angleMode(DEGREES);
-  imageMode(CENTER);
+  // imageMode(CENTER);
+  noSmooth(); // 关闭抗锯齿
+  imageMode(CORNER);
+
+  // 创建背景图层
+  bgLayer = createGraphics(width, height);
+  let w = width / pixelSize;
+  let h = height / pixelSize;
+
+  // 将原图缩小，再像素化绘制
+  bgImg.resize(w, h);
+  bgLayer.noStroke();
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      let c = bgImg.get(x, y);
+      bgLayer.fill(c);
+      bgLayer.rect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+    }
+  }
+ 
 
   diskX = width/2+60; diskY = height/2; diskRadius = 300;
   clearButtonX=20; clearButtonY=20; clearButtonW=160; clearButtonH=40;
   speedSliderX=20; speedSliderY=80; speedSliderW=160; speedSliderH=20;
-  // paletteX=20; paletteY=120; paletteW=160; paletteH=400;
   paletteX = 20; // 原来是20，现在整体向左移，不会挡住中间的 disk
   paletteY = 120;
   paletteW = 160;
@@ -85,7 +110,8 @@ function setup() {
 
 // 主循环：更新旋转并绘制
 function draw() {
-  background('#393E46');
+  image(bgLayer, 0, 0); // 贴上像素背景
+  // background('#393E46');
   let now = millis();
   let dt = (now - lastFrameTime) / 1000;
   lastFrameTime = now;

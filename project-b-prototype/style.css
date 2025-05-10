@@ -10,11 +10,12 @@ body {
   }
   
   #p5-canvas-container {
-    flex: 2; /* 左边 canvas */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    flex: 2;
+    display: block;
+    padding: 0;
+    margin: 0;
   }
+  
   
   #main-container {
     flex: 1; /* 右边文字 */
