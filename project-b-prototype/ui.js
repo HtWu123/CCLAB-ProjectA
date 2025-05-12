@@ -1,6 +1,5 @@
-// 绘制控制面板
 function drawInterface() {
-    // 调色板区域
+    // 调色板
     fill(30,30,40,200);
     stroke(100,100,120);
     rect(paletteX, paletteY, paletteW, paletteH, 10);
@@ -35,7 +34,7 @@ function drawInterface() {
          clearButtonX + clearButtonW/2,
          clearButtonY + clearButtonH/2);
   
-    // 调试信息
+    // 
     fill(255);
     noStroke();
     textAlign(LEFT, TOP);
@@ -46,6 +45,5 @@ function drawInterface() {
   
   function drawDraggedElement() {
     let idx = draggedElement.imageIndex;
-    // 跟随鼠标绘制图标
     drawNoteIcon(idx, mouseX, mouseY, 40);
   }

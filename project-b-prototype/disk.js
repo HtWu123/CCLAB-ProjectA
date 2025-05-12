@@ -6,36 +6,31 @@ class Disk {
       this.rotation = 0;
     }
   
-    // 绘制唱片盘（底盘 + 轨道 + 旋转元素 + 指针）
+    // 绘制唱片盘
     draw(elements, currentRotation) {
       push();
-      // 移动到唱片中心
       translate(this.x, this.y);
       this.rotation = currentRotation;
   
-      // —— 绘制底盘 ——
       fill('#FA812F');            // 底色
-      stroke('#DFD0B8');          // 边框色
-      strokeWeight(3);             // 边框粗细
       circle(0, 0, this.radius * 2);
   
-      // —— 绘制三条同心轨道 ——
+      // 绘制三条轨道
       this.drawTracks();
-  
-      // —— 旋转并绘制各音符元素 ——
+      // 旋转并绘制各音符元素
       push();
-      rotate(this.rotation);            // 整盘旋转
+      rotate(this.rotation); // total rotate
       noStroke();
-      fill('#948979');                         // 字的颜色
+      fill('#948979');
       textAlign(CENTER, CENTER);  
-      textSize(this.radius * 0.1);           // 字体大小为半径的 10% 
+      textSize(this.radius * 0.1); 
       textStyle(BOLD); 
       text("Echo Archive", 0, 0); 
 
       for (let e of elements) {
         push();
-        rotate(e.angle);           // 每个元素相对于盘的角度
-        // 如果正好经过指针区
+        rotate(e.angle);     // 每个元素相对于盘的角度
+        // 如果pass through the needle，highlight
         if (e.highlighted) {
           noStroke();
           fill(noteColors[e.imageIndex], 150);
@@ -45,25 +40,22 @@ class Disk {
         pop();
       }
       pop();
-  
-      // —— 绘制指针 ——
+      //needle
       this.drawNeedle();
-  
       pop();
     }
   
-    // 绘制三条同心轨道
+    //轨道
     drawTracks() {
       for (let i = 0; i < 3; i++) {
         let inner = this.radius * (i * 0.3);
         let outer = this.radius * ((i + 1) * 0.3);
   
-        // 轨道填充
         fill('#FFB22C');
         noStroke();
         circle(0, 0, outer * 2);
   
-        // 中心"空洞"
+        // 中间的圈
         if (inner > 0) {
           fill('#222831');
           circle(0, 0, inner * 2);
@@ -77,7 +69,6 @@ class Disk {
       circle(0, 0, this.radius * 0.15);
     }
   
-    // 绘制固定指针
     drawNeedle() {
       stroke('#BB3E00');
       strokeWeight(8);
@@ -91,11 +82,11 @@ class Disk {
       circle(0, 0, 10, 10);
     }
   
-    // 检查每个元素是否经过指针区，若进入则播放音符并短暂高亮
+    // check 是否经过指针位置，如果是则播放
     checkElements(elements, currentRotation) {
-      const startAngle = 355, endAngle = 5;
+      const startAngle = 355, endAngle = 5; //在这个角度内的话就播放
       for (let e of elements) {
-        let ga = (e.angle + currentRotation) % 360;
+        let ga = (e.angle + currentRotation) % 360; //element angle
         let inZone = (ga >= startAngle || ga <= endAngle);
         if (inZone && !e.inNeedleZone) {
           this.playNote(e.note, e.instrument);
@@ -106,14 +97,14 @@ class Disk {
       }
     }
   
-    // 小工具：根据鼠标到盘心距离判断所在轨道
+    // calculate which tone
     getTrackFromDistance(d) {
       if (d < this.radius * 0.3) return 0;
       if (d < this.radius * 0.6) return 1;
       return 2;
     }
   
-    // 小工具：根据轨道索引返回摆放半径和声音合成器类型
+    // instrument
     getTrackInfo(idx) {
       if (idx === 0) return { radius: this.radius * 0.15, instrument: 'sawtooth' };
       if (idx === 1) return { radius: this.radius * 0.45, instrument: 'triangle' };
@@ -132,12 +123,11 @@ class Disk {
       osc.start();
     
       let env = new p5.Envelope();
-      env.setADSR(0.01, 0.15, 0.07, 0.4); // 攻击迅速、衰减快、无持续、释放柔和
+      env.setADSR(0.01, 0.15, 0.07, 0.4); 
       env.setRange(0.5, 0);
     
       env.play(osc);
     
-      // 在 envelope 结束后关闭振荡器（400ms是 release 时间）
       setTimeout(() => osc.stop(), 600);
     }
     
