@@ -83,19 +83,29 @@ class Disk {
     }
   
     // check 是否经过指针位置，如果是则播放
+
     checkElements(elements, currentRotation) {
-      const startAngle = 355, endAngle = 5; //在这个角度内的话就播放
-      for (let e of elements) {
-        let ga = (e.angle + currentRotation) % 360; //element angle
+      const startAngle = 355, endAngle = 5; 
+      // the zone from 355° to 5°
+      for (let e of elements) { //traverse all of the elements on the disk
+        let ga = (e.angle + currentRotation) % 360; 
+        // Calculate the element's global angle on the rotating disk
         let inZone = (ga >= startAngle || ga <= endAngle);
-        if (inZone && !e.inNeedleZone) {
-          this.playNote(e.note, e.instrument);
-          e.highlighted = true;
-          setTimeout(() => { e.highlighted = false; }, 300);
+        if (inZone && !e.inNeedleZone) { 
+          // If the element just entered the needle zone
+          this.playNote(e.note, e.instrument); 
+          // Play its note with the assigned instrument
+          e.highlighted = true; // highlight it
+          // After 300 milliseconds, remove the highlight
+          setTimeout(() => {
+            e.highlighted = false;
+          }, 300);
         }
+        // Update the element's state 
         e.inNeedleZone = inZone;
       }
     }
+    
   
     // calculate which tone
     getTrackFromDistance(d) {
