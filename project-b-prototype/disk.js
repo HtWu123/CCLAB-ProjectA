@@ -87,9 +87,10 @@ class Disk {
     checkElements(elements, currentRotation) {
       const startAngle = 355, endAngle = 5; 
       // the zone from 355° to 5°
-      for (let e of elements) { //traverse all of the elements on the disk
+      for (let e of elements) { 
+        //traverse all of the elements on the disk
         let ga = (e.angle + currentRotation) % 360; 
-        // Calculate the element's global angle on the rotating disk
+        //element's global angle on the rotating disk
         let inZone = (ga >= startAngle || ga <= endAngle);
         if (inZone && !e.inNeedleZone) { 
           // If the element just entered the needle zone
@@ -106,6 +107,8 @@ class Disk {
       }
     }
     
+
+
   
     // calculate which tone
     getTrackFromDistance(d) {
